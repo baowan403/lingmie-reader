@@ -54,6 +54,13 @@ noscript .chapter,.no-js .chapter{opacity:1;transform:none}
 @media(max-width:600px){.content{padding:0 1.2rem 4rem}.chapter{padding:2rem 0}.toc-toggle{right:1rem;bottom:1rem;width:42px;height:42px}.toc-panel{right:1rem;bottom:4.5rem}}
 .chapter p:has(br),.chapter p:empty{text-indent:0}
 ::selection{background:var(--accent);color:var(--bg)}
+.resume-toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-card);border:1px solid var(--accent-dim);border-radius:10px;padding:.7rem 1rem;display:flex;align-items:center;gap:.8rem;z-index:1001;opacity:0;pointer-events:none;transition:all .4s;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.resume-toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.resume-text{color:var(--text);font-size:.85rem;white-space:nowrap}
+.resume-btn{background:var(--accent);color:var(--bg);border:none;border-radius:6px;padding:.4rem .8rem;cursor:pointer;font-size:.9rem;font-weight:700;transition:background .2s}
+.resume-btn:hover{background:var(--text-bright)}
+.resume-close{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:.8rem;padding:.2rem;transition:color .2s}
+.resume-close:hover{color:var(--text-bright)}
 </style>
 </head>
 <body>
@@ -414,12 +421,18 @@ noscript .chapter,.no-js .chapter{opacity:1;transform:none}
         <a href="#ch4" class="toc-item" data-chapter="4">第004章　延水鎮</a>
 </nav>
 
+<div class="resume-toast" id="resumeToast">
+  <span class="resume-text"></span>
+  <button class="resume-btn" id="resumeBtn">&#x2192;</button>
+  <button class="resume-close" id="resumeClose">&#x2715;</button>
+</div>
 <script>
 const bar=document.getElementById('progressBar');
 function updateProgress(){const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=h>0?(s/h*100)+'%':'0%'}
 window.addEventListener('scroll',updateProgress,{passive:true});
 const chapters=document.querySelectorAll('.chapter');
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');updateTocActive(e.target.dataset.chapter)}})},{threshold:0,rootMargin:'200px 0px 0px 0px'});
+let currentCh='';
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');currentCh=e.target.dataset.chapter;updateTocActive(currentCh)}})},{threshold:0,rootMargin:'200px 0px 0px 0px'});
 chapters.forEach(c=>obs.observe(c));
 const tog=document.getElementById('tocToggle'),pan=document.getElementById('tocPanel');
 tog.addEventListener('click',()=>pan.classList.toggle('open'));
@@ -427,6 +440,41 @@ document.addEventListener('click',e=>{if(!pan.contains(e.target)&&!tog.contains(
 function updateTocActive(n){document.querySelectorAll('.toc-item').forEach(a=>{a.classList.toggle('active',a.dataset.chapter===n)})}
 document.querySelectorAll('.toc-item').forEach(a=>a.addEventListener('click',()=>pan.classList.remove('open')));
 document.querySelectorAll('.chapter p').forEach(p=>{const t=p.textContent.trim();if(t.startsWith('\u300c')||t.startsWith('\u300e')||t.startsWith('\u201c'))p.style.textIndent='0'});
+
+// Reading progress: save
+const SAVE_KEY='lingmie_progress';
+let saveTimer=null;
+function saveProgress(){
+  const ratio=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+  if(ratio<0.02)return; // don't save if at top
+  const data={scrollRatio:ratio,chapter:currentCh,time:Date.now()};
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify(data))}catch(e){}
+}
+window.addEventListener('scroll',()=>{clearTimeout(saveTimer);saveTimer=setTimeout(saveProgress,1500)},{passive:true});
+
+// Reading progress: restore
+(function(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return;
+    const data=JSON.parse(raw);
+    if(!data.scrollRatio||data.scrollRatio<0.02)return;
+    const toast=document.getElementById('resumeToast');
+    const txt=toast.querySelector('.resume-text');
+    const titles=document.querySelectorAll('.chapter-title');
+    let chTitle='';
+    if(data.chapter){const el=document.getElementById('ch'+data.chapter);if(el)chTitle=el.textContent}
+    txt.textContent=chTitle?('\u7E7C\u7E8C\u95B1\u8B80\uFF1A'+chTitle):'\u7E7C\u7E8C\u4E0A\u6B21\u95B1\u8B80';
+    toast.classList.add('show');
+    document.getElementById('resumeBtn').addEventListener('click',()=>{
+      const y=data.scrollRatio*(document.documentElement.scrollHeight-window.innerHeight);
+      window.scrollTo({top:y,behavior:'smooth'});
+      toast.classList.remove('show');
+    });
+    document.getElementById('resumeClose').addEventListener('click',()=>{toast.classList.remove('show')});
+    setTimeout(()=>{toast.classList.remove('show')},8000);
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
