@@ -1,0 +1,432 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈滅 — 第一篇　磐石</title>
+<meta name="description" content="靈滅，第一篇　磐石「磐石」線上閱讀。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#141110;--bg-surface:#1c1915;--bg-card:#231f1a;
+  --text:#d4c5a9;--text-dim:#8a7e6a;--text-bright:#ede0c8;
+  --accent:#c9a84c;--accent-dim:#8b7433;--accent-glow:rgba(201,168,76,.15);
+  --divider:#3a332a;--font-body:'Noto Serif TC',serif;--font-display:'ZCOOL XiaoWei',serif;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{font-family:var(--font-body);color:var(--text);background:var(--bg);line-height:1.9;-webkit-font-smoothing:antialiased}
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent-dim),var(--accent));z-index:1000;transition:width .15s;width:0}
+.cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(201,168,76,.06) 0%,transparent 70%)}
+.cover-label{font-family:var(--font-body);font-size:.85rem;letter-spacing:.6em;color:var(--text-dim);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .3s forwards}
+.cover-title{font-family:var(--font-display);font-size:clamp(3.5rem,8vw,6.5rem);color:var(--text-bright);letter-spacing:.15em;margin-bottom:.5rem;opacity:0;animation:fadeUp .8s .5s forwards;text-shadow:0 0 60px rgba(201,168,76,.15)}
+.cover-arc{font-family:var(--font-body);font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--accent);letter-spacing:.3em;margin-bottom:3rem;opacity:0;animation:fadeUp .8s .7s forwards}
+.cover-scroll{opacity:0;animation:fadeUp .8s 1.2s forwards,pulse 2s 2s infinite}
+.cover-scroll svg{width:28px;height:28px;stroke:var(--text-dim);stroke-width:1.5;fill:none}
+.content{max-width:720px;margin:0 auto;padding:0 2rem 6rem}
+.chapter{padding:3rem 0;opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+noscript .chapter,.no-js .chapter{opacity:1;transform:none}
+.chapter.visible{opacity:1;transform:translateY(0)}
+.chapter-title{font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.2rem);color:var(--text-bright);text-align:center;letter-spacing:.12em;margin-bottom:2.5rem;padding-bottom:1.2rem;position:relative}
+.chapter-title::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:1px;background:var(--accent)}
+.chapter p{font-size:clamp(1rem,1.8vw,1.1rem);margin-bottom:1.4rem;text-align:justify;text-indent:2em;color:var(--text)}
+.chapter p:first-of-type{text-indent:0;font-size:clamp(1.05rem,1.9vw,1.15rem);color:var(--text-bright)}
+.scene-break{display:flex;align-items:center;justify-content:center;gap:10px;margin:2.5rem 0;opacity:.5}
+.scene-break span{display:block;width:5px;height:5px;background:var(--accent);border-radius:50%}
+.scene-break span:nth-child(2){width:7px;height:7px;opacity:.7}
+.chapter-divider{display:flex;align-items:center;justify-content:center;padding:4rem 0}
+.divider-ornament{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--accent-dim),transparent)}
+.toc-toggle{position:fixed;right:1.5rem;bottom:1.5rem;width:48px;height:48px;border-radius:50%;background:var(--bg-card);border:1px solid var(--divider);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:999;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.toc-toggle:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.toc-toggle svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none}
+.toc-panel{position:fixed;right:1.5rem;bottom:5.5rem;background:var(--bg-card);border:1px solid var(--divider);border-radius:12px;padding:1.2rem;z-index:998;opacity:0;pointer-events:none;transform:translateY(10px);transition:all .3s;box-shadow:0 8px 30px rgba(0,0,0,.5);min-width:180px}
+.toc-panel.open{opacity:1;pointer-events:auto;transform:translateY(0)}
+.toc-panel-title{font-size:.75rem;color:var(--text-dim);letter-spacing:.2em;margin-bottom:.8rem}
+.toc-item{display:block;padding:.5rem .8rem;border-radius:6px;color:var(--text-dim);text-decoration:none;font-size:.9rem;transition:all .2s;margin-bottom:2px}
+.toc-item:hover{color:var(--text-bright);background:var(--accent-glow)}
+.toc-item.active{color:var(--accent);background:var(--accent-glow)}
+.footer{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:.8rem;letter-spacing:.1em}
+.footer-line{width:40px;height:1px;background:var(--divider);margin:0 auto 1rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+@media(max-width:600px){.content{padding:0 1.2rem 4rem}.chapter{padding:2rem 0}.toc-toggle{right:1rem;bottom:1rem;width:42px;height:42px}.toc-panel{right:1rem;bottom:4.5rem}}
+.chapter p:has(br),.chapter p:empty{text-indent:0}
+::selection{background:var(--accent);color:var(--bg)}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<section class="cover">
+  <div class="cover-label">長篇玄幻小說</div>
+  <h1 class="cover-title">靈滅</h1>
+  <div class="cover-arc">第一篇　磐石</div>
+  <div class="cover-scroll"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<main class="content">
+    <article class="chapter" data-chapter="1">
+      <h2 class="chapter-title" id="ch1">第001章　山中</h2>
+      <p>泥軟了。</p>
+      <p>謝霖半蹲在溪邊，把食指壓進地面的蹄印裡。指頭觸到底部，淺得很，連第一個指節都沒吃滿。蹄印的形狀窄而長，前端分叉壓得不深——使力的方式不對，不是在跑，是在走。</p>
+      <p>母鹿。沒跑。</p>
+      <p>他把手指抽出來，在大腿側面蹭了一下。蹄印邊沿的泥還立著，沒有塌，底部才剛滲進一層水膜。離開不超過半炷香。</p>
+      <p>風從左前方過來，夾著一股爛葉子泡水的酸氣，底下還有很淡的一層腥——是溪裡翻肚的死魚。謝霖慢慢站直身體，沒有順著蹄印往前走，而是拐向溪流上游，繞了一段。</p>
+      <p>逆風。腿痠也不換方向。</p>
+      <p>這個規矩他給自己立了五年。最初幾年不懂，獵物聞到人味就跑，白追一整天。後來記住了。不是一次記住的，是跑空了十幾趟才記住的。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>林子裡安靜。那種乾的、厚的靜，除了自己的心跳聲以外什麼都落不進來。連鳥都沒在叫。</p>
+      <p>謝霖放慢步子，前腳掌先著地，腳跟慢慢壓下去。這種走法費小腿，繃久了會發抖，但踩在落葉上幾乎沒有聲音。九歲的時候開始練，剛開始走兩百步就得停下來揉腿，蹲在地上捏小腿肚子，捏到痠脹退了才敢繼續走。後來走成了習慣，不用想。</p>
+      <p>他看見了。</p>
+      <p>溪流拐彎的地方，一棵歪脖子楓樹底下，母鹿低著頭在喝水。土黃色的皮毛上粘著碎葉，肋骨一根一根頂在皮下面，輪廓清楚得像是從裡面要戳出來。</p>
+      <p>瘦。入冬之前沒吃飽。</p>
+      <p>謝霖沒動。</p>
+      <p>他數了三個呼吸。周圍沒有第二頭。母鹿落單不算常見，但這個時節不奇怪——公鹿爭地盤已經開始了，沒搶到位置的母鹿有時候會被趕走。</p>
+      <p>他把背上的短弓慢慢取下來。弓梢劃過肩膀的時候蹭到外衣上一塊補丁，發出一點聲音。</p>
+      <p>母鹿的左耳轉了一下。</p>
+      <p>謝霖停住。</p>
+      <p>右手懸在半空，弓弦還沒搭上箭。他維持著這個姿勢，一動不動。心跳快起來了，但呼吸是穩的。這兩件事分開控制他花了很長時間。</p>
+      <p>三息。五息。</p>
+      <p>母鹿的耳朵轉回去了，頭重新低下。</p>
+      <p>箭搭上弦。弓臂緩慢拉開，柘木弓用了三年多，中段磨出一條淺溝，剛好卡在虎口的繭上。</p>
+      <p>他沒拉滿。七分。左肩微微壓低，箭尖指向母鹿前腿後方，第四根肋骨。</p>
+      <p>這個位置他在同一棵樹上練過。拿草繩綁了一團枯草當靶子，同一個角度，同一個距離，射了上千次。草散了就重綁。那棵樹的皮被磨掉了整整一圈。</p>
+      <p>鬆手。</p>
+      <p>箭飛出去的軌跡偏了一點，大概一根手指寬。</p>
+      <p>但夠了。</p>
+      <p>箭紮進母鹿的肋間。不是第四根肋骨，是第三和第四之間。母鹿前腿一軟，身體往側面倒下去，蹄子在溪邊的碎石上蹬了幾下，水花濺出來。</p>
+      <p>謝霖從灌木後面衝出去。右手抽出腰間的短刀——連柄帶刃不到一尺半，刀刃上有幾道捲口，是撬過骨頭留下的。</p>
+      <p>他繞到母鹿背後，一膝壓住後胯，左手按脖子，短刀從喉嚨下方切進去。位置很準。刀刃擦過氣管外壁那層軟骨的觸感他很熟，然後是血管破開時刀柄上傳來的一下輕顫。</p>
+      <p>後腿又蹬了兩下，越來越慢。</p>
+      <p>停了。</p>
+      <p>血從切口流出來，淌進溪水裡，被沖成一條淡紅的線。</p>
+      <p>謝霖維持著壓住的姿勢，又等了十幾息。確認徹底不動了，才把膝蓋移開。</p>
+      <p>刀在褲腿上蹭了兩下。不是為了乾淨。血乾了會把刀粘在鞘裡，下次拔刀就慢半拍。</p>
+      <p>吃過虧的。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>剝皮花了小半個時辰。</p>
+      <p>刀從腹部往下拉，沿著後腿內側一路到底，再把皮從筋膜上揭開。筋膜和皮之間那層薄薄的脂肪被刀面帶起來，黏在指頭上，滑。這一步不用看了。最初割破過鹿腸子，那股味道染了一整天洗不掉。後來手就穩了。不是什麼天分的問題。剖了幾十頭以後，手不穩也得穩。</p>
+      <p>內臟掏出來，挖個坑埋了。坑不用太深，一尺就夠，上面拿石頭壓住。山裡的規矩——不埋的話味道散出去，下次再經過這一帶就不太平。</p>
+      <p>鹿皮綁在背上，四肢和軀幹分開扛。加起來七八十斤，壓在肩膀上硌得疼。</p>
+      <p>疼歸疼，不能分兩趟搬。分兩趟就要多走一遍山路，天黑之前回不去。晚上的山不能待。</p>
+      <p>謝霖調了一下肩上的重量分佈，順著溪邊往山下走。鹿血滲過草繩，順著後背一路淌下去，在腰那裡糊了一片。衣服本來就是灰褐色的，多一塊看不出來。</p>
+      <p>山路全是碎石和露出地面的樹根。他的鞋底只剩薄薄一層，每一步都能感覺到石頭的形狀。</p>
+      <p>走得不快，但穩。每一步都落在根部或者石頭的縫隙裡。不踩浮土，不踩落葉堆。落葉底下有時候是空的，踩塌了就是崴腳。山裡崴腳不是小事——沒有人來背你下去。</p>
+      <p>左腳踝上面有一道舊傷的印子。十一歲那年踩斷了一截朽木摔的。腫了半個月，那半個月靠屋裡剩的肉乾撐過去的。</p>
+      <p>從那以後每一步都看地面。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>下了坡，穿過一片稀疏的雜木林，破屋在前面。</p>
+      <p>四面石頭壘的牆，只有三面半是直的，歪出去的那半面靠一根粗樹枝從外頭撐著。屋頂鋪了茅草，去年才換過，但冬天漏了幾場雪，邊角已經塌了一塊，露出底下發黑的木條。</p>
+      <p>門是兩塊木板拼起來的，中間有一條指頭寬的縫。</p>
+      <p>謝霖把鹿肉從肩上卸下來，靠在門邊的石頭上。肩膀壓出來的紅印隔著衣服都能看到。</p>
+      <p>他推開門板。板子底部刮著泥地，每天開門都要刮一下，好幾年下來那道弧形的溝已經有半寸深了。</p>
+      <p>屋裡的東西不多。</p>
+      <p>一張草墊鋪在地上。靠牆疊了一堆獸皮，攢著拿去鎮上換的。角落裡有一堆灰燼，上面架了一個鐵絲彎成的烤架，歪歪扭扭，是他自己折的。</p>
+      <p>沒有凳子。做過一張。冬天劈了燒了。後來懶得再做。</p>
+      <p>謝霖把鹿腿拖進來，切了幾條肉穿在削尖的木棍上，架到烤架上。火生起來以後，他在草墊上坐下來，看著火。</p>
+      <p>肉慢慢變色。油脂滴進灰裡，發出很細的聲響。烤肉的味道漸漸把獸皮堆的酸氣蓋過去了。</p>
+      <p>等了一會兒，差不多了。他把木棍拔出來，咬了一口。邊緣焦了，裡面還帶著血絲。咬下去的時候牙齒碰到了一根沒剔乾淨的筋，韌得很，扯了兩下才斷。嚼了幾下，嚥了。</p>
+      <p>沒有鹽。上個月用完的。肉的味道全靠烤出來的焦香撐著，嚥到喉嚨裡有一點腥。下次去鎮上再說。</p>
+      <p>他吃得越來越快。一條肉三口吞完，又拿起第二條。吃的時候整個人弓著腰，兩隻手護在前面。</p>
+      <p>小時候有一回烤好的肉被山貓叼走了。追出去沒追上，那天晚上餓到天亮。這個姿勢是從那時候留下來的。</p>
+      <p>吃完以後開始處理剩下的肉。割成薄片，拿到屋外掛在兩棵樹之間拴的草繩上。繩子架得高，山貓夠不著。</p>
+      <p>這也是被偷過以後改的高度。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>屋外的日頭開始偏西了。山裡傍晚來得比山下早。太陽一過了那道棱線，氣溫就往下掉。</p>
+      <p>謝霖回到屋裡，在草墊上躺下來。</p>
+      <p>屋頂破洞裡漏進來一點光，照在對面的石牆上，是一小片亮的。他看著那塊亮斑，看了一會兒，什麼也沒有想。</p>
+      <p>他把身體蜷起來。膝蓋縮到胸口，兩隻手夾在腿間。草墊底下是潮濕的，涼從下面滲上來，後背有些冷。</p>
+      <p>閉上眼睛。</p>
+      <p>明天要磨刀。那張鹿皮得刮乾淨。架子上掛的那幾張差不多乾了，要翻個面。弓弦也鬆了，得換。</p>
+      <p>想到這裡他已經睡著了。</p>
+      <p>蜷在草墊上的身體不大。呼吸很輕。</p>
+      <p>屋外晾的鹿肉在風裡晃了一下。</p>
+      <p>沒人說話。</p>
+      <p>沒人來。</p>
+      <p>入夜之後很久，山的深處傳來一聲叫。</p>
+      <p>不是狼，不是雕，不是他聽過的任何東西。</p>
+      <p>謝霖翻了個身。沒醒。</p>
+    </article>
+
+    <div class="chapter-divider"><div class="divider-ornament"></div></div>
+
+    <article class="chapter" data-chapter="2">
+      <h2 class="chapter-title" id="ch2">第002章　進村</h2>
+      <p>鹿皮乾了三天，邊角翹起來的時候就能背了。</p>
+      <p>謝霖蹲在地上把四張皮一張疊一張，捲成圓筒，再用草繩從兩頭綁死。手指繞到最後一圈繩結時停了一下——這批皮刮得算乾淨的，油脂沒留幾處，但最大那張有一道爪痕。山貓留的。晾在外頭第二天早上去看，繩子被咬斷了半截，皮掉在地上拖了一段。髒沒髒不好說，賣相是差了。</p>
+      <p>他把繩結收緊，站起來，扛上背。</p>
+      <p>天沒全亮。山路走到鎮上要兩個時辰，走慢了趕不上收購鋪開門。去年有一次到晚了，老闆要關門，壓了更狠的價。從那以後就走早的。</p>
+      <p>腳上那雙鞋底快磨穿了。踩在山石上，腳趾碰到石頭的坑窪，一顆一顆分得出輪廓。膝蓋以下全是露水打濕的草痕，褲腿黏在小腿上，走起來多了一層阻力。</p>
+      <p>謝霖沒管。</p>
+      <p>路是走過幾百遍的。哪一段下坡滑，哪一段有鬆石頭，不需要動腦子。手裡拎著那把短刀——不是防身，是習慣。刀不離手的習慣是十歲開始養的，有一回下山路上遇見一頭山貓蹲在前面舔爪子，刀在背包最底下，翻了半天才摸到。那次沒出事，但規矩從那天就定了。</p>
+      <p>天亮全了的時候，鎮口的土路出現在坡下面。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>落石村不大。</p>
+      <p>一條主街，兩側擺攤的多，開鋪子的少。街面上鋪了石板，但縫隙裡全是泥，下過雨就是一灘。村口有一棵老槐樹，半邊死了，留著另外半邊還在長葉子。沒人砍——聽說是誰家祖上種的。</p>
+      <p>謝霖從村口走進去的時候，街上已經有人了。賣包子的蒸籠在冒氣，隔壁鋪子的夥計趴在櫃台上打盹兒，一個挑水的老頭從巷子裡出來，扁擔壓得他整個人往右歪。</p>
+      <p>沒人看他。</p>
+      <p>山裡下來的少年扛著一卷獸皮走在街上——個頭不高，看著像十三四歲，步子卻比村裡的大人還快，眼睛不看攤位。他不逛。每次來都是直走到底——收購鋪在主街盡頭，靠著南牆根那間。</p>
+      <p>門板開著一半。裡面燈已經點了。</p>
+      <p>謝霖把獸皮卷從肩上卸下來，靠在門框邊，側身擠了進去。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>收購鋪裡頭不亮。一盞油燈掛在牆上，照出半面牆的架子，架子上碼著幾十張獸皮、幾捆草藥、兩簍風乾的菌子。空氣裡有皮子的酸味和油煙味，混在一起，像是這間屋子本身就在發酵。</p>
+      <p>老闆坐在裡面的矮凳上，面前攤著一本帳簿，手裡捏著筆在記什麼。五十幾歲的樣子，頭頂禿了一片，剩下的頭髮往後抿著，油光光的。聽見動靜抬了一下頭，看見是謝霖，又低下去了。</p>
+      <p>「放那兒。」</p>
+      <p>謝霖把獸皮卷解開，四張皮在地上攤成一排。他蹲下來把邊角拉平，手指順著鹿皮的紋理捋了一下，確認毛面朝上。</p>
+      <p>老闆擱下筆，走過來，蹲下身拿手搓了搓最大那張的邊角。指甲摳了一下皮面，翻過來看背面刮得乾不乾淨。到第三張的時候，指頭在皮面上戳了戳那道山貓抓的痕。</p>
+      <p>「這張不好。」</p>
+      <p>謝霖沒說話。</p>
+      <p>老闆站起來，走回矮凳坐下，拿起帳簿翻了兩頁。</p>
+      <p>「三張好皮，加一張瑕疵的。」他頭沒抬，「四百文。」</p>
+      <p>謝霖放在腰間布袋上的手頓了一下。</p>
+      <p>上一批鹿皮，三張好的就四百五。</p>
+      <p>「上回是四百五。」</p>
+      <p>老闆翻帳簿的手沒停。</p>
+      <p>「上回是上回。」他把帳簿合上，放在膝蓋上，看了謝霖一眼，「最近不好做。學院那邊又徵了一批靈石——你知道靈石吧？不知道也沒關係——反正上頭一徵，大傢伙都跟著縮。我這鋪子一個月的租，比去年漲了兩成。」</p>
+      <p>他說得不急不慢，像是解釋，又像是不太想解釋。</p>
+      <p>「四百文，收不收？」</p>
+      <p>謝霖算了一下。四百文換糧，扣掉鹽和繩子，剩下的夠吃十天出頭。上個月四百五的時候能撐半個月。</p>
+      <p>他點了一下頭。</p>
+      <p>老闆從矮凳底下拉出一個木箱，數了四串銅錢擱在桌角上。每串一百文，繩子穿的，數都不用數。</p>
+      <p>「皮子留下。」老闆把四張皮拖到牆邊的架子下面，碼上去，動作熟練，「下回來的話，盡量別帶有痕的。好皮子價錢能穩住。差的嘛——」</p>
+      <p>他沒說完。意思到了。</p>
+      <p>謝霖把四串銅錢揣進腰間的布袋裡，轉身出了門。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>街上比早先熱鬧了一些。太陽已經過了屋頂，照到街面上，石板縫裡的泥乾了一層皮，踩上去脆的。</p>
+      <p>謝霖站在收購鋪門口，沒有馬上走。</p>
+      <p>四百文。</p>
+      <p>街對面的雜貨攤擺著鹽、粗布、幾捆繩子。攤主是個中年婦人，正跟人講價，聲音大得隔條街都聽得見。</p>
+      <p>謝霖走過去。</p>
+      <p>他不喜歡逛。需要什麼，買什麼，買完就走。</p>
+      <p>「一斤半鹽，一捆草繩。」</p>
+      <p>婦人瞥了他一眼，從身後的筐裡摸出鹽包和繩子，往秤上一扔。</p>
+      <p>「鹽七十文，繩子十五。」</p>
+      <p>謝霖記得上個月鹽六十。他沒問為什麼。</p>
+      <p>掏錢，接過東西，塞進背上的簍子裡。轉身往糧鋪走——在主街中段，一間門板上刻了個「糧」字的矮房子。</p>
+      <p>粟米一斗六十文。他買了三斗，花了一百八。掌櫃是個瘦老頭，稱的時候斗口只平不冒。謝霖看著那條平得像刀切的米面，沒多說。</p>
+      <p>剩一百三十五文。留著。</p>
+      <p>背簍加上糧袋壓下來，肩膀勒出一道紅印。他調了一下繩子的位置，讓重量分到兩邊，然後往村口走。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>走到老槐樹底下的時候，謝霖腳步慢了一下。</p>
+      <p>街對面有一個人。</p>
+      <p>不是村裡的人。</p>
+      <p>那個人穿了一件灰白色的長衫，衫子的料子不像粗布，邊上也沒有補丁。他站在一家茶鋪門口，左手端著碗茶，右手背在身後。腳上的鞋是乾淨的——不是洗乾淨的那種乾淨，是沒踩過泥的那種。</p>
+      <p>村裡的路全是泥。</p>
+      <p>謝霖多看了一眼。風從那邊過來，他吸了一下——這人身上沒汗味。大太陽底下走了一條土街，衫子是乾的。</p>
+      <p>那個人喝完茶，把碗放回攤上，轉身往村外走。腳步很輕，衫子的下擺幾乎不怎麼晃。走了幾步，人就拐進巷子裡看不見了。</p>
+      <p>旁邊茶攤的老闆收碗的時候嘟囔了一句：「又是學院那邊下來的……」</p>
+      <p>聲音不大，後半截被風吹散了。</p>
+      <p>謝霖沒停。他背著糧袋和鹽，從村口的土路拐上山道。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>回去的路比來的時候慢。</p>
+      <p>背上的東西沉了，路又是上坡。腿酸了以後他換了一次肩，把繩子從左肩挪到右肩。勒痕從左邊搬到右邊，疼的地方換了一個，疼的程度沒變。</p>
+      <p>太陽已經偏到山棱後面了。風從谷底吹上來，帶著一點涼。</p>
+      <p>謝霖走在碎石路上，踩到一塊鬆動的石頭，腳底滑了一下，穩住了。他低頭看了一眼鞋——前面那個洞又大了一點。下回進村得買雙新的。又是一筆錢。</p>
+      <p>四百文。上回四百五。再上回五百出頭。</p>
+      <p>他沒細想。想也沒用。皮子刮得再乾淨，老闆說多少就是多少。村裡就那一家收，不賣給他賣給誰？</p>
+      <p>到破屋的時候天快黑了。</p>
+      <p>他把糧袋和鹽放進屋裡，把鹽罐蓋緊。上次蓋沒蓋好，受了潮，結成一塊，敲了半天才敲散。</p>
+      <p>灶裡的灰是冷的。他蹲下來重新生火。火折子打了三下才著——快用完了。又是一筆。</p>
+      <p>火苗竄起來的時候，屋裡亮了一點。</p>
+      <p>架子上掛的肉還有幾條，風乾得差不多了，顏色發深。他扯了一條下來，就著新買的粟米煮了一鍋。米是生的，煮透需要等。</p>
+      <p>他坐在草墊上，看著鍋。</p>
+      <p>背上勒過的地方開始疼了。肩膀那兩條印子現在腫起來一點，隔著衣服能摸到棱。</p>
+      <p>不是第一次。</p>
+      <p>明天在東邊那片林子下幾個套。鹿少了，兔子還有。兔皮不值錢，但勝在量——攢夠十張能換一張鹿皮的價。費時間，不費力。</p>
+      <p>他想到這裡，把鍋裡的米粥舀進碗裡，就著乾肉吃了。</p>
+      <p>沒有鹽。</p>
+      <p>新買的鹽留著。省一頓是一頓。</p>
+      <p>睡著之前想起一件事——回山路上碰到一個下山的柴夫。擦肩的時候那人說了句：「聽說學院的人明後天下來。」</p>
+      <p>什麼學院。謝霖沒問。翻個身就睡了。</p>
+    </article>
+
+    <div class="chapter-divider"><div class="divider-ornament"></div></div>
+
+    <article class="chapter" data-chapter="3">
+      <h2 class="chapter-title" id="ch3">第003章　選拔</h2>
+      <p>火折子沒了。</p>
+      <p>謝霖翻了兩遍灶台邊的雜物堆，確認那根用了快兩個月的火折子只剩一截指頭長的殘芯。昨天晚上生火的時候就不太好打了，今天早上試了四五下，芯子斷了，燃不起來。</p>
+      <p>得去鎮上買。</p>
+      <p>他把短刀別在腰間，背了空簍子出門。天還沒亮透，山路上的石頭濕漉漉的，踩上去涼的。走到半山腰的時候太陽才從棱線後面翻出來，把樹影拉得老長。</p>
+      <p>下到岔路口，謝霖腳步頓了一下。</p>
+      <p>路上有人。不是一兩個——前面走了一群，四五個大人帶著幾個半大的孩子，腳步急，像是趕著去哪。其中一個婦人手裡拎著一個布包，另一隻手死死拽著身邊一個男孩的手腕，那男孩走得東倒西歪，鞋子踢起一頭的灰。</p>
+      <p>不是趕集的日子。</p>
+      <p>謝霖沒跟他們一路。他從旁邊的小道繞過去，先到了鎮口。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>落石村跟上回來的時候不一樣。</p>
+      <p>主街上人比平時多了一倍不止。老槐樹底下擠了一堆人，嗡嗡地說話，聲音蓋過了包子攤冒出來的蒸氣。平時這個點，賣包子的已經揭了蒸籠蓋叫賣了，今天他也站在攤後面伸著脖子往人群裡張望，蒸籠蓋半掀著，氣全散了。</p>
+      <p>幾家鋪子的門板還沒卸全。平常最早開門的那間繩麻鋪只開了半扇，裡頭的夥計趴在門框上看熱鬧，手裡捏著一截沒鬆完的麻繩。</p>
+      <p>布告欄上貼了一張新的告示。</p>
+      <p>謝霖走過去的時候，前面已經圍了兩三層人。他沒擠，站在外圈看了一眼——告示的紙是白的，字是墨寫的，比村裡常見的那種黃紙通告齊整得多。他認字不快，但關鍵幾個看得懂：磐石學院、招收、適齡少年、七日內、延水鎮集合。</p>
+      <p>旁邊一個賣菜的大娘踮著腳指那張告示，跟身邊的人嚷：「看見沒？學院招人了！我說昨天怎麼有人騎馬從驛站那邊過來——就是送這個的！」</p>
+      <p>沒人理她。大家各說各的。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>謝霖去買了火折子。八文一根，比上個月貴了兩文。雜貨攤的婦人今天心不在攤上，找錢的時候抓錯了一把，被後面的漢子喊了一聲才換回來。</p>
+      <p>他把火折子塞進簍子，沒急著走。</p>
+      <p>街上的議論聲碎碎的，從四面八方漏過來。他站在雜貨攤邊上，一邊檢查繩結，一邊聽。</p>
+      <p>「包吃包住。你知道包吃包住是什麼意思嗎？在裡面吃的比咱們鎮上地主家還好！」</p>
+      <p>「不止。我聽延水鎮那邊的人說，進了學院正式學生，每個月發月銀——二兩。二兩！」</p>
+      <p>二兩。</p>
+      <p>謝霖的手停在繩結上。</p>
+      <p>鹿皮四張，四百文。一兩銀子換一千文。二兩就是兩千文。他一個月拼死了進山獵獸、扛皮下山、被壓價，不到一千。</p>
+      <p>「不光是銀子，出來就是修行中人了。你看上回從村裡出去那個——他爹現在走路都挺著胸，村長見了都客客氣氣的。」</p>
+      <p>「那是人家兒子爭氣。你家那個行嗎？」</p>
+      <p>「行不行去試試不就知道了？反正報個名又不要錢。」</p>
+      <p>旁邊一個帶著頭巾的婦人睨了一眼：「說得輕巧。去延水鎮一趟，路上吃住就得花幾十文。選不上的白跑一趟，錢也沒了，人也累了。」</p>
+      <p>「那你家的去不去？」</p>
+      <p>婦人沒吭聲。但她手裡正拽著一個七八歲大的女娃，手指扣在女娃肩上，扣得白白的。</p>
+      <p>幾個大人越說越熱鬧。有人開始數自家孩子今年幾歲、夠不夠格，有人揪著村長問集合點怎麼走、要帶什麼。村長被圍在中間，臉漲得通紅，一個問題還沒答完下一個就塞過來了。他的嗓門比平時高了兩個調，講到「學院」兩個字的時候下巴抬得老高，好像那兩個字本身就帶著一股子重量。旁邊一個抱孩子的婦人插嘴問了句什麼，村長擺手：「十三到十五，你這個太小了。」</p>
+      <p>人群外圈，一個穿灰褐短褂的漢子蹲在牆根底下，手裡掰著一根枯草，跟旁邊的人嘀咕。</p>
+      <p>「我舅家的表兄，前些年進了學院。」</p>
+      <p>旁邊那個剝花生的老頭嗯了一聲，沒看他。</p>
+      <p>「第一年還有消息。第二年說是被派到什麼地方去了。第三年——」他把那根草莖折成兩截，扔在地上，「沒有了。他老娘託人打聽，學院那邊說是出了遠門。什麼遠門，一走三年不回來的遠門？」</p>
+      <p>剝花生的老頭往嘴裡丟了一顆，嚼了嚼，含含糊糊地說：「學院那麼大的地方，管那麼多人，哪能個個都交代清楚。」</p>
+      <p>「也是。」灰褐短褂的漢子站起來，拍了拍褲子上的土，往人群那邊走了。</p>
+      <p>他走了以後，剝花生的老頭又嚼了一顆，嘴裡哼了一聲，沒再說。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>謝霖靠在雜貨攤邊的一根柱子上，把聽到的東西在腦子裡過了一遍。</p>
+      <p>包吃包住。月銀二兩。</p>
+      <p>謝霖的手摸到腰間的布袋，隔著布捏了一下那串銅錢。袋子比上個月薄了。</p>
+      <p>腳上那隻鞋又磨到石板了。</p>
+      <p>他也聽到了那句「沒有了」。三年沒回來。什麼遠門。</p>
+      <p>去了可能回不來。</p>
+      <p>街上有個小孩子被他媽拉著往家的方向走，一邊被拉一邊回頭看人群，回頭回得身子都掰了。他媽的聲音很遠，大意是「回去再說」。</p>
+      <p>謝霖看了一眼那個小孩子，收回目光。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>他從柱子上直起身，走向布告欄。</p>
+      <p>這回人少了些，前面只站了兩個帶孩子的婦人。謝霖站在那張白紙前面，把上面的字一個一個看完了。</p>
+      <p>延水鎮。從落石村往東走，過橋，沿官道，兩三天腳程。帶得動的帶，帶不動的不帶。</p>
+      <p>他記住了。</p>
+      <p>轉身走到村長邊上。村長正在跟一個殺豬匠的媳婦解釋怎麼走延水鎮，嗓子都快劈了。</p>
+      <p>謝霖等他說完，問了一句：「報名要不要戶帖？」</p>
+      <p>村長愣了一下，上下打量了他兩眼。謝霖比上回來的時候又瘦了一點，腰間那把短刀的刀鞘磨得發白。</p>
+      <p>「你是……山上頭那個？」</p>
+      <p>「嗯。」</p>
+      <p>村長想了想，搖了搖頭：「不用。告示上面寫的——適齡少年自行前往就成。到了那邊有人登記。」他頓了一下，又加了一句，「不過你一個人……家裡沒大人？」</p>
+      <p>謝霖沒接這句話。村長張了張嘴，又把嘴閉上了。</p>
+      <p>謝霖點了一下頭，轉身往村口走。</p>
+      <p>走出幾步的時候聽見身後村長在跟旁邊的人說什麼「山上頭那個野小子」，聲音不大，但風送過來了。後半截沒聽清，也不想聽。</p>
+      <p>街上的人比剛才少了些。看過佈告的三三兩兩散了，幾個大人還站在路邊嘀咕。包子攤的蒸籠蓋終於蓋回去了，但這個時辰已經沒什麼客了。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>回山的路還是那條路。上坡。風從谷底吹上來，帶著松脂和泥土的味道。</p>
+      <p>謝霖走得比平時快。簍子是空的，肩上沒什麼重量。腳底的石頭還是一顆一顆磨得到，但今天踩上去沒覺得硌。</p>
+      <p>到了破屋門口的時候，太陽還掛在半山腰。他把簍子放在門邊，站在門檻上沒進去。</p>
+      <p>屋裡的光很暗。灶台黑乎乎的，牆上燻了好幾年的煙灰把石頭的顏色蓋住了。草墊子攤在角落裡，被窩的形狀還留著——早上走的時候沒收，跟每天一樣。灶台邊那個陶碗還擺著，裡面有昨天晚上沒喝完的半碗米湯，涼透了，面上結了一層薄皮。</p>
+      <p>架子上剩下的幾條肉都取了，用草繩綁在一起，塞進簍子底下。短刀拔出來看了一下，刃口還成，插回去。</p>
+      <p>腰間的布袋裡，銅錢剩一百二十七文。他把布袋口的繩子繫緊了，塞進懷裡。</p>
+      <p>鹽罐裡的鹽倒進一個小布包，紮好，放進簍裡。火折子、繩子、乾肉、鹽、銅錢。沒了。</p>
+      <p>所有的東西一個簍子裝得下。他站在屋子中間，轉了一圈。</p>
+      <p>草墊子帶不了。灶台帶不走。牆角那堆沒劈完的柴，帶了也是累贅。</p>
+      <p>目光掃過屋頂那個洞。天光從洞裡漏進來，照出一片灰塵在空氣裡打轉。他在這個洞下面睡了幾年，每年的洞都比上一年大一圈。</p>
+      <p>謝霖把簍子背上肩，走出去，沒有回頭。</p>
+      <p>門外的風比屋裡涼。山路往東。過橋，沿官道走。兩三天。</p>
+      <p>他低頭走了幾步。鞋前面那個洞裡，腳趾碰到了一顆石子。他沒停，用腳把石子蹭到路邊，繼續走。</p>
+      <p>日頭偏西了一點，影子拉在前面，比他長。</p>
+    </article>
+
+    <div class="chapter-divider"><div class="divider-ornament"></div></div>
+
+    <article class="chapter" data-chapter="4">
+      <h2 class="chapter-title" id="ch4">第004章　延水鎮</h2>
+      <p>橋是木板搭的，踩上去晃，底下的溪水比山裡的寬了一倍，流得急，聲音大。</p>
+      <p>謝霖站在橋中間停了一下。不是怕。是腳下的板子鬆，有一塊翹了角，他用腳背試了一下深淺才踩過去。過了橋，路就不一樣了。</p>
+      <p>官道。</p>
+      <p>他沒走過這麼寬的路。兩輛馬車並排都有餘，泥是踩實的，比山路硬出一截。腳底板反而不太適應——山路是鬆的，會讓，這條路不讓，每一步都頂著腳心。鞋前面那個洞又磨大了一點，腳趾頭碰著地面的時候有點辣。</p>
+      <p>路上沒什麼人。偶爾遠遠過一輛牛車，趕車的人看都不看他，錯過去就沒了。風從前面吹過來，帶著泥土和什麼植物的氣味——不是松脂，也不是蕨。認不出來。</p>
+      <p>走到日頭正頂的時候，他從簍子裡撕了半條乾肉，邊走邊嚼。嚼了很久才嚥下去。</p>
+      <p>第一天走到天黑。</p>
+      <p>路邊有一處歇腳的涼棚，棚頂蓋了幾塊稻草，底下擺了兩條石凳。幾個趕路的腳夫已經歇在那了，各占一頭，沒人搭理誰。棚角一個老婦人守著一口鍋，賣熱水。十文一碗。</p>
+      <p>十文。</p>
+      <p>謝霖捏了一下懷裡的布袋，掏出銅錢數了十個。老婦人接過去也沒看他，舀了一碗遞過來，水燙嘴，但喝下去胃裡暖了。他靠著棚柱坐下，撕了一條乾肉嚼著。肉已經硬得要費勁才咬得動，鹹味倒還在。</p>
+      <p>嚼到一半想起那個婦人說的——「路上吃住就得花幾十文」。這才第一天，十文就沒了。</p>
+      <p>他把剩下的乾肉塞回簍子裡，數了數，還剩四條半。省著點。</p>
+      <p>夜裡靠著柱子睡的。棚裡有蚊子，但比山裡的破屋好一點——至少頂上不漏。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>第二天一早繼續走。</p>
+      <p>路上的人多了。</p>
+      <p>不是走反方向的——是跟他往同一個方向的。零零散散的，大部分是大人帶著孩子，有的背著包袱，有的拉著板車。一個壯漢挑了兩個筐，筐裡各坐了一個半大的孩子，走得搖搖晃晃的，筐裡的孩子抓著邊沿，臉被顛得通紅。</p>
+      <p>謝霖沒跟他們走一路。他腳程快，從旁邊超過去，拉開了距離。</p>
+      <p>越往東走，路兩邊的東西越多。先是田。然後是零星幾戶人家。再往前，房子開始密了，有石頭砌的牆，不是土坯。有炊煙。有牲畜圈。空氣裡混著牛糞和什麼食物的味道，說不上來是香還是臊。</p>
+      <p>空氣跟山裡不一樣了。</p>
+      <p>他吸了一口，沒停，繼續走。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>延水鎮。</p>
+      <p>第二天日頭偏西的時候到的。</p>
+      <p>謝霖站在鎮門口，腳底的鞋又破了一個洞。兩天的路走下來，左腳那隻已經快散了，大腳趾整根露在外面。</p>
+      <p>鎮門口有石頭砌的牆，比落石村高了兩個人。門洞裡窩著兩個守衛，腰間掛著短刀，懶洋洋地靠在牆根底下打瞌睡。有人進出他們也不攔，眼皮抬一下就算看過了。</p>
+      <p>裡面比落石村大了不止兩三倍。</p>
+      <p>幾條街交叉著往幾個方向延出去，鋪子一間挨一間，有賣布的、賣鐵器的、賣吃食的。一個賣肉的攤子上掛著四五條豬腿，油光光的，蒼蠅繞著轉。旁邊的茶棚裡坐了幾個喝茶的老頭，桌上擺著兩碟花生，嘴裡嘟嘟囔囔地不知在說什麼。</p>
+      <p>人太多了。</p>
+      <p>謝霖在山裡住了好幾年，習慣的是一個人。風的聲音、水的聲音、自己踩在泥上的聲音——幹淨的，分得清的。這裡所有的聲音攪在一起，人說話的、牲畜叫的、車輪碾在石板上的、鐵匠鋪裡錘起錘落的——擠成一團，分不開。</p>
+      <p>他的肩膀被撞了一下。是一個挑擔子的漢子，腳步急，連頭都沒回。謝霖往旁邊閃了。</p>
+      <p>又被撞了一下。這次他沒閃。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>告示上寫的集合地點在延水鎮驛站。</p>
+      <p>謝霖問了兩次路才找到。第一次問一個掃地的婦人，婦人朝東面指了一下，嘴裡含含糊糊說了幾個字就走了。第二次問一個坐在門檻上啃饅頭的小孩，小孩嘴裡塞著東西，用饅頭指了個方向。</p>
+      <p>驛站在鎮子東面。後方有一大片石板鋪的廣場，平時大概是停車卸貨用的——地上還有車轍的痕跡，石板的縫裡夾了幾根碎草。</p>
+      <p>謝霖站在廣場邊上掃了一圈。三面是牆，一面朝著驛站的後門，出口只有兩個。地上鋪了十幾張草蓆。</p>
+      <p>廣場角落搭了一個棚子，棚子底下坐了一個穿灰色短衫的中年人，面前擺著一張桌子和一本攤開的名冊。旁邊站了一個年輕人，拎著一壺水，表情無聊，眼睛望著鎮子那頭，不知在看什麼。</p>
+      <p>廣場上已經有人了。三十幾個少年，年紀看著都差不多，十三到十五之間。有的蹲在牆根底下，有的坐在草蓆上，有的站著往四周張望。大部分穿得比謝霖好一點，但也好不到哪去——都是粗布衣裳，有幾個膝蓋上打了補丁。有幾個明顯是大人帶來的，旁邊還站著大人，大人的臉比孩子還繃得緊。</p>
+      <p>謝霖走到棚子底下。</p>
+      <p>中年人抬頭看了他一眼。不是打量，是掃了一下就回到名冊上。</p>
+      <p>「哪個村的？」</p>
+      <p>「落石村。」</p>
+      <p>「名字？」</p>
+      <p>「謝霖。」</p>
+      <p>中年人在名冊上寫了幾個字。筆尖蘸了一下墨，動作很順，寫慣了的。他頭也不抬：「今天先在這兒歇。明天一早檢測。」</p>
+      <p>筆尾朝廣場另一邊指了指：「草蓆上找地方睡。晚食驛站會送來。」</p>
+      <p>謝霖點了一下頭，走了。</p>
+      <p>沒人問他有沒有大人陪。他也沒說。</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>晚食是粟米粥加一碟鹹菜。</p>
+      <p>粥比謝霖自己煮的稠。他把碗裡的東西吃乾淨，用手背抹了一下嘴，又從簍子裡撕了半條乾肉嚼著。省著吃。從山上帶下來的時候有六條，路上吃了一條半，剩四條半。再撕半條，四條。</p>
+      <p>廣場上的人越來越多。天黑的時候大概有四十幾個了。後來的大部分是附近幾個村鎮來的，有的走了兩天才到——跟他一樣。一個胖胖的男孩趴在草蓆上，跟旁邊的人抱怨腳痠，聲音軟得很，像是沒怎麼走過遠路。他旁邊坐了個瘦長臉的少年，一直沒怎麼說話，低著頭在用草繩編什麼東西，手指很靈活。</p>
+      <p>謝霖沒跟任何人搭話。</p>
+      <p>他找了一張靠牆的草蓆坐下來，背靠著石牆。從這個角度能看到整個廣場。</p>
+      <p>習慣。在山裡睡覺靠樹幹或者靠石壁，不把背暴露在外面。</p>
+      <p>入夜以後大部分人都睡了。有幾個少年還在竊竊私語，聲音壓得低，從石板上面漂過來，斷斷續續的。</p>
+      <p>「……聽說一半人要被刷掉。」</p>
+      <p>「檢測不過就得回去。」</p>
+      <p>「那回去怎麼辦？路費都花了。」</p>
+      <p>沒人回答。</p>
+      <p>謝霖的手指碰了一下腰間的布袋。裡面的銅錢比出發的時候薄了一截。回去的路費，他沒算過。</p>
+      <p>他盯著頭頂的星星看了一會兒。星星跟山裡的一樣亮，一顆一顆擠在天上，密得很。但風的味道不一樣。山裡的風帶松脂和泥土，這裡的風帶著馬廄和石板曬了一天的那種悶熱。還有別的什麼——一層薄薄的、說不清楚的東西，山裡從來沒有過的。</p>
+      <p>他翻了個身，把短刀壓在身體底下。刀鞘硌著肋骨，硌慣了。</p>
+      <p>閉眼。</p>
+    </article>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-line"></div>
+  <p>靈滅 · 第一篇　磐石 · 未完待續</p>
+</footer>
+
+<button class="toc-toggle" id="tocToggle" aria-label="">
+  <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+</button>
+<nav class="toc-panel" id="tocPanel">
+  <div class="toc-panel-title">目　錄</div>
+        <a href="#ch1" class="toc-item" data-chapter="1">第001章　山中</a>
+        <a href="#ch2" class="toc-item" data-chapter="2">第002章　進村</a>
+        <a href="#ch3" class="toc-item" data-chapter="3">第003章　選拔</a>
+        <a href="#ch4" class="toc-item" data-chapter="4">第004章　延水鎮</a>
+</nav>
+
+<script>
+const bar=document.getElementById('progressBar');
+function updateProgress(){const s=window.scrollY,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=h>0?(s/h*100)+'%':'0%'}
+window.addEventListener('scroll',updateProgress,{passive:true});
+const chapters=document.querySelectorAll('.chapter');
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');updateTocActive(e.target.dataset.chapter)}})},{threshold:0,rootMargin:'200px 0px 0px 0px'});
+chapters.forEach(c=>obs.observe(c));
+const tog=document.getElementById('tocToggle'),pan=document.getElementById('tocPanel');
+tog.addEventListener('click',()=>pan.classList.toggle('open'));
+document.addEventListener('click',e=>{if(!pan.contains(e.target)&&!tog.contains(e.target))pan.classList.remove('open')});
+function updateTocActive(n){document.querySelectorAll('.toc-item').forEach(a=>{a.classList.toggle('active',a.dataset.chapter===n)})}
+document.querySelectorAll('.toc-item').forEach(a=>a.addEventListener('click',()=>pan.classList.remove('open')));
+document.querySelectorAll('.chapter p').forEach(p=>{const t=p.textContent.trim();if(t.startsWith('\u300c')||t.startsWith('\u300e')||t.startsWith('\u201c'))p.style.textIndent='0'});
+</script>
+</body>
+</html>
